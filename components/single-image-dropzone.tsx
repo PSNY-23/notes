@@ -13,14 +13,14 @@ export function SingleImageDropzoneUsage() {
 
   const uploadFn: UploadFn = React.useCallback(
     async ({ file, onProgressChange, signal }) => {
-      const res = await edgestore.publicImages.upload({
+      const res = await edgestore.publicFiles.upload({
         file,
         signal,
         onProgressChange,
       });
       // you can run some server action or api here
       // to add the necessary data to your database
-      console.log(res);
+      
       return res;
     },
     [edgestore],

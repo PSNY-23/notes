@@ -1,7 +1,0 @@
-'use client'
-
-export const Header = () => {
-  return (
-    <div>header</div>
-  )
-}
