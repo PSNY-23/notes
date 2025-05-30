@@ -37,10 +37,14 @@ const DocumentIdPage = () => {
   }
   return (
     <div className="pb-40">
-      <div className="h-[25vh]" />
+      <div className="h-[35vh]" />
       <div className="mx-auto md:max-w-3xl lg:max-w-4xl">
-        <Toolbar initialData={document} />
-        <Editor editable={true} onChange={onChange} initialContent={document.content} />
+        <Toolbar preview initialData={document} />
+        <Editor
+          editable={false}
+          onChange={onChange}
+          initialContent={document.content}
+        />
       </div>
     </div>
   );

@@ -67,7 +67,7 @@ export const Item = ({
         if (!expanded) {
           onExpand?.();
         }
-        // router.push(`/documents/${documentId}`);
+        router.push(`/documents/${documentId}`);
       },
     );
     toast.promise(promise, {
@@ -77,16 +77,18 @@ export const Item = ({
     });
   };
 
-  const onArchive = async (event:React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const onArchive = async (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+  ) => {
     event.stopPropagation();
     if (!id) return;
-    const promise = archive({ id });
+    const promise = archive({ id }).then(() => router.push(`/documents`));
     toast.promise(promise, {
       loading: "Moving to trash",
       success: "Notes moved to trash",
-      error: "Failed to archive notes"
-    })
-  }
+      error: "Failed to archive notes",
+    });
+  };
   const ChevronIcon = expanded ? ChevronDown : ChevronRight;
   return (
     <div
@@ -94,7 +96,7 @@ export const Item = ({
       role="button"
       style={{ paddingLeft: level ? `${level * 12 + 12}px` : "12px" }}
       className={cn(
-        "group hover:bg-primary/5 text-muted-foreground flex min-h-[27px] w-full items-center py-1 pr-3 text-sm font-medium",
+        "group hover:bg-primary/5 text-muted-foreground flex min-h-[27px] w-full cursor-pointer items-center py-1 pr-3 text-sm font-medium",
         active && "bg-primary/5 text-primary",
       )}
     >
@@ -110,7 +112,7 @@ export const Item = ({
       {documentIcon ? (
         <div className="mr-2 shrink-0 text-[18px]">{documentIcon}</div>
       ) : (
-        <Icon className="text-muted-foreground mr-2 h-[18px] shrink-0" />
+        <Icon className="text-muted-foreground mr-2 h-[18px] w-[18px] shrink-0" />
       )}
 
       <span className="truncate">{label}</span>

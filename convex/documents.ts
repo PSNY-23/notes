@@ -213,17 +213,15 @@ export const getSearch = query({
   },
 });
 
-// get a single doucment by it's id
+// get a single doucment by it's id: this is interesting one because used in public(publish)
+//authenticated user => can get it always
+// unauthenticated user => only if that document has {isPushlished: true}
 export const getById = query({
   args: {
     documentId: v.id("documents"),
   },
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) {
-      throw new Error("Not Authenticated");
-    }
-    const userId = identity?.subject;
+    
     const document = await ctx.db.get(args.documentId);
     if (!document) {
       throw new Error("Not found");
@@ -233,7 +231,12 @@ export const getById = query({
     if (document.isPublished && !document.isArchived) {
       return document;
     }
-    //but if you are a owner of the doucment you should see it
+    //but if you are a owner of the doucment you should see it always
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      throw new Error("Not Authenticated");
+    }
+    const userId = identity?.subject;
     if (document.userId !== userId) {
       throw new Error("Not Authorized");
     }

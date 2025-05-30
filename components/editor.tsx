@@ -9,11 +9,12 @@ import { PartialBlock } from "@blocknote/core";
 import { useEdgeStore } from "@/lib/edgestore";
 
 interface EditorProps {
+  editable?: boolean;
   initialContent?: string;
   onChange: (content: string) => void;
 }
 
-export const Editor = ({ onChange, initialContent }: EditorProps) => {
+const Editor = ({ onChange, initialContent, editable }: EditorProps) => {
   const { resolvedTheme } = useTheme();
   const { edgestore } = useEdgeStore();
 
@@ -32,6 +33,7 @@ export const Editor = ({ onChange, initialContent }: EditorProps) => {
   return (
     <div>
       <BlockNoteView
+        editable={editable}
         editor={editor}
         theme={resolvedTheme === "dark" ? "dark" : "light"}
         onChange={(editor) => onChange(JSON.stringify(editor.document))}
@@ -39,3 +41,5 @@ export const Editor = ({ onChange, initialContent }: EditorProps) => {
     </div>
   );
 };
+
+export default Editor;

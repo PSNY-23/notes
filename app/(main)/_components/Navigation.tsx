@@ -10,7 +10,7 @@ import {
   Settings,
   Trash,
 } from "lucide-react";
-import { useParams, usePathname } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
 import { UserItem } from "./UserItem";
@@ -30,6 +30,7 @@ import { useSettings } from "@/hooks/use-settings";
 import { Navbar } from "./navbar";
 
 export const Navigation = () => {
+  const router = useRouter();
   const params = useParams();
   const pathname = usePathname();
   const isMobile = useMediaQuery("(max-width:768px)");
@@ -113,7 +114,9 @@ export const Navigation = () => {
   };
 
   const handleCreate = () => {
-    const promise = create({ title: "Untitled" });
+    const promise = create({ title: "Untitled" }).then((documentId) =>
+      router.push(`/documents/${documentId}`),
+    );
     toast.promise(promise, {
       loading: "Creating new note...",
       success: "Note created",
@@ -137,7 +140,7 @@ export const Navigation = () => {
           onClick={collapse}
           role="button"
           className={cn(
-            "text-muted-foreground absolute top-3 right-2 h-6 w-6 rounded-sm transition hover:bg-neutral-300 dark:hover:bg-neutral-600",
+            "text-muted-foreground absolute top-3 right-2 h-6 w-6 cursor-pointer rounded-sm transition hover:bg-neutral-300 dark:hover:bg-neutral-700",
             isMobile
               ? "opacity-100"
               : "opacity-0 group-hover/sidebar:opacity-100",
@@ -150,13 +153,12 @@ export const Navigation = () => {
         <div className="px-4 py-2">
           <UserItem />
           <Item label="Search" icon={Search} isSearch onClick={search.onOpen} />
-          <Item
-            label="Settings"
-            icon={Settings}
-            isSearch
-            onClick={settings.onOpen}
-          />
+          <Item label="Settings" icon={Settings} onClick={settings.onOpen} />
           <Item onClick={handleCreate} label="New page" icon={PlusCircle} />
+        </div>
+        <div className="mt-4 ml-4">
+          <DocumentList />
+          <Item onClick={handleCreate} icon={Plus} label="Add a page" />
           <Popover>
             <PopoverTrigger className="mt-4 w-full">
               <Item label="Trash" icon={Trash} />
@@ -168,10 +170,6 @@ export const Navigation = () => {
               <TrashBox />
             </PopoverContent>
           </Popover>
-        </div>
-        <div className="mt-4">
-          <DocumentList />
-          <Item onClick={handleCreate} icon={Plus} label="Add a page" />
         </div>
 
         {/* Resizer */}

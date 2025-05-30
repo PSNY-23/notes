@@ -18,7 +18,7 @@ export const UserItem = () => {
       <DropdownMenuTrigger asChild>
         <div
           role="button"
-          className="hover:bg-primary/5 flex w-full items-center p-3 text-sm"
+          className="hover:bg-primary/5 cursor-pointer flex w-full items-center p-3 text-sm"
         >
           <div className="flex max-w-[150px] items-center gap-x-2">
             <Avatar className="h-5 w-5">
