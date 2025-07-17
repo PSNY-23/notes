@@ -10,6 +10,7 @@ import { SignInButton } from "@clerk/nextjs";
 
 export const Heading = () => {
   const { isLoading, isAuthenticated } = useConvexAuth();
+ 
 
   return (
     <div className='max-w-3xl space-y-4'>
